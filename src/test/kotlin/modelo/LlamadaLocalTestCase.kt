@@ -30,10 +30,9 @@ class LlamadaLocalTestCase {
 
     @Test
     fun unaLLamadaLocalEnDiaNoHabilTieneUnMontoEquivalenteA10Centavos(){
-        val fechaLlamada = LocalDateTime.of(2021, Month.OCTOBER,17,9,0)
-        val nuevaLlamada = LlamadaLocal(10,fechaLlamada,ubicacion)
+        val llamadaLocalDiaNoHabil = LlamadaLocal(10,fechaLlamadaDiaNoHabil,ubicacion)
 
-        Assertions.assertEquals(0.10,nuevaLlamada.costoPorTipo())
+        Assertions.assertEquals(0.10,llamadaLocalDiaNoHabil.costoPorTipo())
     }
 
     @Test

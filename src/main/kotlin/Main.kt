@@ -22,6 +22,6 @@ fun main(){
         println("Año facturacion: ${factura.añoDeFacturacion}")
         println("Llamadas del mes: ${factura.llamadasDelMes.map { "${it.javaClass.simpleName}( duracion : ${it.duracion}m, " +
                 "costo: $${it.costoLlamada()})" }}")
-        println("Monto base: ${factura.abonoMensual}")
-        println("Monto total: ${factura.facturar()}")
+        println("Monto base: $${factura.abonoMensual}")
+        println("Monto total: $${factura.facturar()}")
 }

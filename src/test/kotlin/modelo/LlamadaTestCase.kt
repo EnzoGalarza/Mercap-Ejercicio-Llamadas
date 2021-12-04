@@ -11,7 +11,7 @@ class LlamadaTestCase {
     fun unaLlamadaTieneUnaDuracionUnaFechaYUnaUbicacion(){
         val ubicacion = Ubicacion("Argentina","Quilmes")
         val fechaLlamada = LocalDateTime.of(2021,Month.OCTOBER,17,1,0)
-        val nuevaLlamada = Llamada(10,fechaLlamada,ubicacion)
+        val nuevaLlamada = LlamadaLocal(10,fechaLlamada,ubicacion)
 
         Assertions.assertEquals(10,nuevaLlamada.duracion)
         Assertions.assertEquals(ubicacion,nuevaLlamada.ubicacion)
@@ -22,7 +22,7 @@ class LlamadaTestCase {
     fun unaLlamadaTieneUnCostoEquivalenteA10Centavos(){
         val ubicacion = Ubicacion("Argentina","Quilmes")
         val fechaLlamada = LocalDateTime.of(2021,Month.OCTOBER,17,1,0)
-        val nuevaLlamada = Llamada(10,fechaLlamada,ubicacion)
+        val nuevaLlamada = LlamadaLocal(10,fechaLlamada,ubicacion)
 
         Assertions.assertEquals(1.0,nuevaLlamada.costoLlamada())
     }
@@ -31,7 +31,7 @@ class LlamadaTestCase {
     fun unaLlamadaTieneUnCostoEquivalenteA20Centavos(){
         val ubicacion = Ubicacion("Argentina","Quilmes")
         val fechaLlamada = LocalDateTime.of(2021,Month.OCTOBER,18,8,0)
-        val nuevaLlamada = Llamada(10,fechaLlamada,ubicacion)
+        val nuevaLlamada = LlamadaLocal(10,fechaLlamada,ubicacion)
 
         Assertions.assertEquals(2.0,nuevaLlamada.costoLlamada())
     }

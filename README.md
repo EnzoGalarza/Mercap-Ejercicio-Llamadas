@@ -21,3 +21,7 @@ requerimientos:
    archivos, etc.). Alcanza con simular los datos creándolos en memoria
 8) Como salida alcanza ver por pantalla como sería una factura (sin preocuparse por
    darle un formato especial
+
+| UML |
+| ------------- |
+![Alt text](UML-Llamadas.png?raw=true "UML")

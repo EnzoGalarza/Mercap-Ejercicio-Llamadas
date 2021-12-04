@@ -11,6 +11,12 @@ class FacturaTestCase {
     private lateinit var fechaHabilJunio : LocalDateTime
     private lateinit var fechaNoHabilJunio : LocalDateTime
     private lateinit var fechaOctubre : LocalDateTime
+    private lateinit var ubicacionBsAs: Ubicacion
+    private lateinit var ubicacionJujuy : Ubicacion
+    private lateinit var llamadaJunio2021Habil : Llamada
+    private lateinit var llamadaJunio2021NoHabil : Llamada
+    private lateinit var llamadaNacOctubre2021 : Llamada
+
 
     @BeforeEach
     fun setUp(){
@@ -18,6 +24,11 @@ class FacturaTestCase {
         fechaHabilJunio = LocalDateTime.of(2021,Month.JUNE,2,9,10)
         fechaNoHabilJunio = LocalDateTime.of(2021,Month.JUNE,5,6,10)
         fechaOctubre = LocalDateTime.of(2021,Month.OCTOBER,5,6,10)
+        ubicacionBsAs = Ubicacion("Argentina", "Buenos Aires")
+        ubicacionJujuy = Ubicacion("Argentina","Jujuy",0.6)
+        llamadaJunio2021Habil = LlamadaLocal(10,fechaHabilJunio,ubicacionBsAs)
+        llamadaJunio2021NoHabil = LlamadaLocal(5,fechaNoHabilJunio,ubicacionBsAs)
+        llamadaNacOctubre2021 = LlamadaNacional(2,fechaOctubre,ubicacionJujuy)
     }
 
     @Test
@@ -34,46 +45,37 @@ class FacturaTestCase {
     @Test
     fun facturaSoloTieneLlamadasDelMesYAñoDeFacturacion(){
         val fecha2020Junio = LocalDateTime.of(2020,Month.JUNE,5,5,5)
-        val llamada2021Junio = LlamadaLocal(5,fechaHabilJunio, Ubicacion("Argentina","Buenos Aires"))
-        val llamada2021Octubre = LlamadaNacional(10,fechaOctubre,Ubicacion("Argentina","Cordoba"))
-        val llamada2020Junio = LlamadaLocal(15,fecha2020Junio, Ubicacion("Argentina","Buenos Aires"))
+        val llamada2020Junio = LlamadaLocal(15,fecha2020Junio, ubicacionBsAs)
 
         clientePedro.agregarLlamada(llamada2020Junio)
-        clientePedro.agregarLlamada(llamada2021Junio)
-        clientePedro.agregarLlamada(llamada2021Octubre)
+        clientePedro.agregarLlamada(llamadaJunio2021Habil)
+        clientePedro.agregarLlamada(llamadaNacOctubre2021)
         val facturaJunio = Factura(clientePedro,250.0,Month.JUNE,2021)
 
         Assertions.assertEquals(1,facturaJunio.llamadasDelMes.size)
-        Assertions.assertTrue(facturaJunio.llamadasDelMes.contains(llamada2021Junio))
+        Assertions.assertTrue(facturaJunio.llamadasDelMes.contains(llamadaJunio2021Habil))
         Assertions.assertFalse(facturaJunio.llamadasDelMes.contains(llamada2020Junio))
-        Assertions.assertFalse(facturaJunio.llamadasDelMes.contains(llamada2021Octubre))
+        Assertions.assertFalse(facturaJunio.llamadasDelMes.contains(llamadaNacOctubre2021))
     }
 
     @Test
     fun facturaConClienteSinLlamadasEnElMesTieneElAbonoMensualComoMontoTotalDeLaFactura(){
-        clientePedro.agregarLlamada(LlamadaNacional(10,fechaNoHabilJunio, Ubicacion("Argentina","Jujuy")))
+        clientePedro.agregarLlamada(LlamadaNacional(10,fechaNoHabilJunio, ubicacionJujuy))
         val factura = Factura(clientePedro,250.5,Month.OCTOBER,2021)
 
-        Assertions.assertEquals(1,clientePedro.llamadas.size)
-        Assertions.assertEquals(0,factura.llamadasDelMes.size)
         Assertions.assertEquals(250.5,factura.facturar())
     }
 
     @Test
     fun facturaConMesEnJunioConClienteQueRealizo3LlamadasYSolo2EnJunio(){
-        val ubicacionLlamadaLocal = Ubicacion("Argentina","Buenos Aires")
-        val ubicacionNacional = Ubicacion("Argentina","Mendoza",0.6)
-        val llamadaLocal1 = LlamadaLocal(5,fechaHabilJunio,ubicacionLlamadaLocal)
-        val llamadaLocal2 = LlamadaLocal(2,fechaNoHabilJunio,ubicacionLlamadaLocal)
-        val llamadaNacional = LlamadaNacional(1,fechaOctubre,ubicacionNacional)
-        clientePedro.agregarLlamada(llamadaLocal1)
-        clientePedro.agregarLlamada(llamadaLocal2)
+        val llamadaNacional = LlamadaNacional(1,fechaOctubre,ubicacionJujuy)
+        clientePedro.agregarLlamada(llamadaJunio2021Habil)
+        clientePedro.agregarLlamada(llamadaJunio2021NoHabil)
         clientePedro.agregarLlamada(llamadaNacional)
 
         val factura = Factura(clientePedro,250.0,Month.JUNE,2021)
 
-        Assertions.assertEquals(2,factura.llamadasDelMes.size)
-        Assertions.assertEquals(251.2,factura.facturar())
+        Assertions.assertEquals(252.5,factura.facturar())
     }
 
 
